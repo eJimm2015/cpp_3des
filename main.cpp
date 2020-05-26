@@ -23,7 +23,7 @@ int main() {
     affichage(x);
     std::cout << std::endl << "=======" << std::endl;
     DES<false> des = DES<false>(key1);
-    DESinv inv_des = DESinv(key1);
+    DES<true> inv_des = DES<true>(key1);
     SequenceD<64> crypt = des(x);
     SequenceD<64> decrypt = inv_des(crypt);
     std::cout << "crypt : ";
