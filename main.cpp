@@ -9,6 +9,7 @@
 #include "DES.h"
 #include "Crypt.h"
 #include "Decrypt.h"
+#include "DESinv.h"
 
 int main() {
     SequenceD<64> key1 = SequenceD<64>();
@@ -22,12 +23,15 @@ int main() {
     affichage(x);
     std::cout << std::endl << "=======" << std::endl;
     DES<false> des = DES<false>(key1);
-    DES<true> inv_des = DES<true>(key1);
+    DESinv inv_des = DESinv(key1);
     SequenceD<64> crypt = des(x);
     SequenceD<64> decrypt = inv_des(crypt);
+    std::cout << "crypt : ";
     affichage(crypt);
-    std::cout << std::endl;
+    std::cout << std::endl << "=======" << std::endl;
     operator<<(std::cout, crypt);
+    std::cout << std::endl;
+    std::cout << "decrypt : ";
     std::cout << std::endl << "=======" << std::endl;
     affichage(decrypt);
     std::cout << std::endl;

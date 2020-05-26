@@ -27,7 +27,8 @@ public :
             right = left*f(right);
             left = Sequence({tmp});
         }
-        return p(SequenceD<64>(right, left), inv_init_p);
+        SequenceD<64> swapped32 = SequenceD<64>(right, left);
+        return p(swapped32, inv_init_p);
     }
 
 };

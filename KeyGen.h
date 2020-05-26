@@ -15,21 +15,29 @@ private:
     std::vector<int> pc2{13,16,10,23,0,4,2,27,14,5,20,9,22,18,11,3,25,7,15,6,26,19,12,1,40,51,30,36,46,54,29,39,50,44,32,47,43,48,38,55,33,52,45,41,49,35,28,31};
     std::vector<int> left_shift{1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
 public:
-    int rounds = inv ? 15 : 0;
+    int rounds = inv ? 16 : 0;
     KeyGen(){}
     KeyGen(SequenceD<64> _seq) {
         Permutation<64, 56> p;
         seq = p(_seq, pc1);
     }
     SequenceD<48> next() {
-
-        if(inv && rounds > -1 || !inv && rounds < 16) {
+        Permutation<56, 48> p;
+        if(!inv && rounds < 16) {
             seq.decalage(left_shift[rounds]);
-            Permutation<56, 48> p;
-            if(inv) rounds--;
-            else rounds++;
+            rounds++;
             return p(seq, pc2);
         }
+        if(inv && rounds > 0) {
+            SequenceD<56> tmp = seq;
+            for(int i=0; i<rounds; i++) tmp.decalage(left_shift[i]);
+            rounds--;
+            return p(tmp, pc2);
+        }
+
+        //inv && rounds > -1
+        // if(inv) rounds--;
+
         /*
         if(rounds < 16) {
             seq.decalage(left_shift[rounds]);
