@@ -77,7 +77,8 @@ std::ostream & operator << (std::ostream &out, SequenceD<64> seq) {
             int tmp = seq(8*i + j);
             dec = dec + std::pow(2, 7-j)*tmp;
         }
-        out << char(dec);
+        unsigned char c = (unsigned char)dec;
+        out << c;
     }
     return out;
 }
@@ -85,7 +86,7 @@ std::ostream & operator << (std::ostream &out, SequenceD<64> seq) {
 std::istream& operator>>(std::istream& in, SequenceD<64>& seq) {
 
     for(int i=0; i<8; i++) {
-        char c;
+        unsigned char c;
         in >> c;
         int val = (int)c;
         std::bitset<8> char_bits(val);
@@ -93,6 +94,7 @@ std::istream& operator>>(std::istream& in, SequenceD<64>& seq) {
             seq[8*i + j] = char_bits[7-j];
         }
     }
+    return in;
 }
 
 void write(std::ostream &out, SequenceD<64> s) {

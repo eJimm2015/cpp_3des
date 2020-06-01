@@ -5,6 +5,7 @@
 #ifndef DES_DECRYPT_H
 #define DES_DECRYPT_H
 #include <string>
+#include <fstream>
 #include "SequenceD.h"
 #include "DES.h"
 
@@ -19,10 +20,26 @@ public :
         key2 = _key2;
     }
 
-    SequenceD<64> operator()(SequenceD<64> x) {
+    void operator()(const char* from, const char* to) {
+    /*
         DES<true> d_des = DES<true>(key1);
         DES<false> c_des = DES<false>(key2);
         return d_des(c_des(d_des(x)));
+    */
+        DES<true> d_des = DES<true>(key1);
+        DES<false> c_des = DES<false>(key2);
+
+
+        std::ifstream in(from, std::ios::in);
+        std::ofstream  out(to, std::ios::out);
+
+        while(!in.eof()) {
+            SequenceD<64> x = SequenceD<64>();
+            operator>>(in >> std::noskipws, x);
+            out << d_des(c_des(d_des(x)));
+        }
+        in.close();
+        out.close();
     }
 };
 #endif //DES_DECRYPT_H
